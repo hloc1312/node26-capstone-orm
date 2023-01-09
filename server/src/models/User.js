@@ -1,4 +1,4 @@
-const { DataTypes } = require("sequelize");
+const { DataTypes, QueryInterface } = require("sequelize");
 const bcrypt = require("bcrypt");
 
 module.exports = (sequelize) => {
@@ -55,6 +55,10 @@ module.exports = (sequelize) => {
       },
       tuoi: {
         type: DataTypes.INTEGER,
+      },
+      duongDan: {
+        type: DataTypes.STRING,
+        field: "duong_dan",
       },
       anhDaiDien: {
         type: DataTypes.STRING,

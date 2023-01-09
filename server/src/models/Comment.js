@@ -14,6 +14,11 @@ module.exports = (sequelize) => {
 
         field: "hinh_id",
       },
+      noiDung: {
+        type: DataTypes.STRING,
+
+        field: "noi_dung",
+      },
       ngayBinhLuan: {
         type: DataTypes.DATE,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),

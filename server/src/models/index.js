@@ -31,24 +31,24 @@ const SaveImage = require("./SaveImage")(sequelize);
 
 // Định nghĩa relationship giữa các model
 // User 1 - n Image
-User.hasMany(Image, { as: "userData", foreignKey: "nguoiDungId" });
-Image.belongsTo(User, { as: "imageData", foreignKey: "nguoiDungId" });
+User.hasMany(Image, { as: "imageData", foreignKey: "nguoiDungId" });
+Image.belongsTo(User, { as: "userData", foreignKey: "nguoiDungId" });
 
 // User 1 - n Comment
-User.hasMany(Comment, { as: "userCommentData", foreignKey: "nguoiDungId" });
-Comment.belongsTo(User, { as: "commentUserData", foreignKey: "nguoiDungId" });
+User.hasMany(Comment, { as: "commentData", foreignKey: "nguoiDungId" });
+Comment.belongsTo(User, { as: "userCommentData", foreignKey: "nguoiDungId" });
 
 // Image 1 - n Comment
-Image.hasMany(Comment, { as: "imageCommentData", foreignKey: "hinhId" });
-Comment.belongsTo(Image, { as: "commentImageData", foreignKey: "hinhId" });
+Image.hasMany(Comment, { as: "commentImageData", foreignKey: "hinhId" });
+Comment.belongsTo(Image, { as: "imageCommentData", foreignKey: "hinhId" });
 
 // User 1 - n SaveImage
-User.hasMany(SaveImage, { as: "userSaveData", foreignKey: "nguoiDungId" });
-SaveImage.belongsTo(User, { as: "saveUserData", foreignKey: "nguoiDungId" });
+User.hasMany(SaveImage, { as: "saveUserData", foreignKey: "nguoiDungId" });
+SaveImage.belongsTo(User, { as: "userSaveData", foreignKey: "nguoiDungId" });
 
 // Image 1 - n SaveImage
-Image.hasMany(SaveImage, { as: "imageSaveData", foreignKey: "hinhId" });
-SaveImage.belongsTo(Image, { as: "saveImageData", foreignKey: "hinhId" });
+Image.hasMany(SaveImage, { as: "saveImageData", foreignKey: "hinhId" });
+SaveImage.belongsTo(Image, { as: "imageSaveData", foreignKey: "hinhId" });
 
 module.exports = {
   sequelize,

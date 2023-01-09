@@ -19,6 +19,9 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING(),
         field: "duong_dan",
       },
+      filename: {
+        type: DataTypes.STRING(),
+      },
       moTa: {
         type: DataTypes.STRING(),
         field: "mo_ta",
