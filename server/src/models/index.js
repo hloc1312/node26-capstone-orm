@@ -43,12 +43,20 @@ Image.hasMany(Comment, { as: "commentImageData", foreignKey: "hinhId" });
 Comment.belongsTo(Image, { as: "imageCommentData", foreignKey: "hinhId" });
 
 // User 1 - n SaveImage
-User.hasMany(SaveImage, { as: "saveUserData", foreignKey: "nguoiDungId" });
-SaveImage.belongsTo(User, { as: "userSaveData", foreignKey: "nguoiDungId" });
+User.belongsToMany(Image, {
+  through: SaveImage,
+  as: "saveImageData",
+  foreignKey: "nguoiDungId",
+});
+Image.belongsToMany(User, {
+  through: SaveImage,
+  as: "userSaveImageData",
+  foreignKey: "hinhId",
+});
 
-// Image 1 - n SaveImage
-Image.hasMany(SaveImage, { as: "saveImageData", foreignKey: "hinhId" });
-SaveImage.belongsTo(Image, { as: "imageSaveData", foreignKey: "hinhId" });
+// // Image 1 - n SaveImage
+// Image.hasMany(SaveImage, { as: "saveImageData", foreignKey: "hinhId" });
+// SaveImage.belongsTo(Image, { as: "imageSaveData", foreignKey: "hinhId" });
 
 module.exports = {
   sequelize,

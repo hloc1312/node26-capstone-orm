@@ -47,7 +47,7 @@ const register = async (data) => {
         <div style="padding: 10px; background-color: #003375">
             <div style="padding: 10px; background-color: white;">
                 <h4 style="color: #0085ff">Đăng nhập tại link này</h4>
-                <a href="https://google.com.vn">Login tai đây</a>
+                <a href="${process.env.CLIENT_LOGIN}">Login tai đây</a>
                 <span style="color: black">Đây là mail test</span>
             </div>
         </div>
@@ -67,31 +67,9 @@ const register = async (data) => {
       console.log("Send mail success");
     });
 
-    // let testAccount = await nodemailer.createTestAccount();
-
-    // // create reusable transporter object using the default SMTP transport
-    // let transporter = nodemailer.createTransport({
-    //   host: "smtp.gmail.com",
-    //   port: 465,
-    //   secure: true, // true for 465, false for other ports
-    //   auth: {
-    //     user: "hloc357@gmail.com", // generated ethereal user
-    //     pass: "aqkfsznwjtvbardl", // generated ethereal password
-    //   },
-    // });
-
-    // // send mail with defined transport object
-    // let info = await transporter.sendMail({
-    //   from: '"Fred Foo 👻" <foo@example.com>', // sender address
-    //   to: "hloc878@gmail.com", // list of receivers
-    //   subject: "Hello ✔", // Subject line
-    //   text: "Hello world?", // plain text body
-    //   html: "<b>Hello world?</b>", // html body
-    // });
-
     return { data: response[0], token: token };
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     throw error;
   }
 };
@@ -103,7 +81,9 @@ const login = async ({ email, matKhau }) => {
       throw new AppErorr(400, "Email not existed");
     }
     const isChecked = response && bcrypt.compareSync(matKhau, response.matKhau);
-
+    if (!isChecked) {
+      throw new AppErorr(400, "Password is wrong");
+    }
     const token = isChecked
       ? jwt.sign(
           {
@@ -120,9 +100,15 @@ const login = async ({ email, matKhau }) => {
     return {
       data: token ? "Login success" : "Password is wrong",
       access_token: token,
+      info: {
+        id: response.nguoiDungId,
+        email: response.email,
+        tuoi: response.tuoi,
+        hoTen: response.hoTen,
+      },
     };
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     throw error;
   }
 };

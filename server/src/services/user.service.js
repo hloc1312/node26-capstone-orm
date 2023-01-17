@@ -1,5 +1,6 @@
 const { AppErorr } = require("../middlewares/handle_error");
 const { User } = require("../models");
+const SaveImage = require("../models/SaveImage");
 const cloudinary = require("cloudinary").v2;
 
 const getUser = async ({ page, pageSize }) => {
@@ -14,7 +15,7 @@ const getUser = async ({ page, pageSize }) => {
     const users = await User.findAndCountAll({ ...queries });
     return users;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     throw error;
   }
 };
@@ -24,7 +25,7 @@ const getImageSaveById = async ({ id }) => {
     const user = await User.findOne({
       where: { nguoiDungId: id },
       include: {
-        association: "saveUserData",
+        association: "saveImageData",
       },
     });
     if (!user) {
@@ -79,9 +80,32 @@ const updateProfile = async ({ id }, data, fileData) => {
     throw error;
   }
 };
+
+const saveImage = async (idNguoiDung, idHinhAnh) => {
+  try {
+    const user = await User.findOne({ where: { nguoiDungId: idNguoiDung } });
+    if (!user) {
+      throw new AppErorr(400, "Id user not existed");
+    }
+
+    // console.log(user.nguoiDungId);
+    const hasSaveImage = await user.hasSaveImageData(+idHinhAnh);
+    if (hasSaveImage) {
+      await user.removeSaveImageData(+idHinhAnh);
+    } else {
+      await user.addSaveImageDatum(+idHinhAnh);
+    }
+
+    // console.log(user.__proto__);
+    return "OK";
+  } catch (error) {
+    throw error;
+  }
+};
 module.exports = {
   getUser,
   getImageSaveById,
   getImageById,
   updateProfile,
+  saveImage,
 };

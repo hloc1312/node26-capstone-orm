@@ -48,9 +48,23 @@ const updateProfile = () => {
   };
 };
 
+const saveImage = () => {
+  return async (req, res, next) => {
+    try {
+      const { id, idHinhAnh } = req.params;
+
+      const user = await userService.saveImage(id, idHinhAnh);
+      res.status(200).json("OK");
+    } catch (error) {
+      throw error;
+    }
+  };
+};
+
 module.exports = {
   getUser,
   getImageSaveById,
   getImageById,
   updateProfile,
+  saveImage,
 };

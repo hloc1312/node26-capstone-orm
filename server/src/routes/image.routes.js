@@ -19,4 +19,5 @@ routerImage.delete(
 
   imageController.deleteImage()
 );
+
 module.exports = routerImage;

@@ -5,7 +5,13 @@ const cloudinary = require("cloudinary").v2;
 
 const getImage = async ({ page, pageSize, name, ...query }) => {
   try {
-    const queries = { raw: true, nest: true };
+    const queries = {
+      raw: true,
+      nest: true,
+      include: {
+        association: "userData",
+      },
+    };
     const offset = !page || +page <= 1 ? 0 : +page - 1;
     const limit = +pageSize || +process.env.LIMIT_PAGE;
 
@@ -23,7 +29,6 @@ const getImage = async ({ page, pageSize, name, ...query }) => {
 
     return images;
   } catch (error) {
-    console.log(error);
     throw error;
   }
 };
@@ -49,16 +54,23 @@ const getCommentByIdImage = async ({ id }) => {
   try {
     const comment = await Image.findOne({
       where: { hinhId: id },
-      include: {
-        association: "commentImageData",
-      },
+      include: [
+        {
+          association: "commentImageData",
+          include: [
+            {
+              association: "userCommentData",
+            },
+          ],
+        },
+      ],
     });
     if (!comment) {
       throw new AppErorr(400, "Id Image not existeds");
     }
     return comment;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     throw error;
   }
 };
@@ -68,7 +80,10 @@ const getSaveByIdImage = async ({ id }) => {
     const save = await Image.findOne({
       where: { hinhId: id },
       include: {
-        association: "saveImageData",
+        association: "userSaveImageData",
+        attributes: {
+          exclude: ["matKhau"],
+        },
       },
     });
     if (!save) {
@@ -115,6 +130,7 @@ const deleteImage = async ({ id }, requester) => {
     throw error;
   }
 };
+
 module.exports = {
   getImage,
   getImageById,

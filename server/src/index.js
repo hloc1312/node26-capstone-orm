@@ -1,5 +1,6 @@
 const express = require("express");
 require("dotenv").config();
+
 const cors = require("cors");
 const { sequelize } = require("./models");
 const v1 = require("./routes");
@@ -12,7 +13,7 @@ sequelize.sync({ alter: true });
 // expres cors
 app.use(
   cors({
-    origin: process.env.CLIENT_URL,
+    origin: "*",
     methods: ["GET", "POST", "PUT", "DELETE"],
   })
 );
