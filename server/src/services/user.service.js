@@ -12,7 +12,10 @@ const getUser = async ({ page, pageSize }) => {
     queries.limit = limit;
 
     // console.log(queries);
-    const users = await User.findAndCountAll({ ...queries });
+    const users = await User.findAndCountAll({
+      ...queries,
+      attributes: { exclude: ["matKhau"] },
+    });
     return users;
   } catch (error) {
     // console.log(error);
@@ -27,6 +30,7 @@ const getImageSaveById = async ({ id }) => {
       include: {
         association: "saveImageData",
       },
+      attributes: { exclude: ["matKhau"] },
     });
     if (!user) {
       throw new AppErorr(400, "User not existed");
@@ -44,6 +48,7 @@ const getImageById = async ({ id }) => {
       include: {
         association: "imageData",
       },
+      attributes: { exclude: ["matKhau"] },
     });
     if (!user) {
       throw new AppErorr(400, "User not existed");
